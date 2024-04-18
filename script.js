@@ -45,7 +45,7 @@ startButton.addEventListener('click', function() {
             ctx.translate(canvas.width / 2, canvas.height / 2);
 
             // 旋转坐标系
-            ctx.rotate(-angle);
+            ctx.rotate(angle);
 
             // 将坐标系移回原位
             ctx.translate(-canvas.width / 2, -canvas.height / 2);
