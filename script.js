@@ -31,7 +31,7 @@ startButton.addEventListener('click', function() {
             var gammaRad = gamma * Math.PI / 180;
 
             // 计算新的x轴与原x轴的夹角
-            var angle = Math.atan2(betaRad, gammaRad);
+            var angle = Math.atan2(gammaRad, betaRad);
 
             // 更新alpha、beta、gamma和angle的显示值，并保留两位小数
             alphaElement.textContent = 'Alpha: ' + alpha.toFixed(2);
