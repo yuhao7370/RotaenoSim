@@ -2,8 +2,7 @@
 var canvas = document.getElementById('myCanvas');
 var ctx = canvas.getContext('2d');
 
-// 获取显示alpha、beta、gamma和angle的元素
-var alphaElement = document.getElementById('alpha');
+// 获取显示beta、gamma和angle的元素
 var betaElement = document.getElementById('beta');
 var gammaElement = document.getElementById('gamma');
 var angleElement = document.getElementById('angle');
@@ -27,24 +26,13 @@ startButton.addEventListener('click', function() {
             var gamma = event.gamma;
 
             // 将角度转换为弧度
-            var alphaRad = alpha * Math.PI / 180;
             var betaRad = beta * Math.PI / 180;
             var gammaRad = gamma * Math.PI / 180;
 
-            // 计算旋转矩阵
-            var R = [
-                [Math.cos(alphaRad) * Math.cos(betaRad), Math.sin(alphaRad) * Math.cos(betaRad), -Math.sin(betaRad)],
-                [Math.cos(alphaRad) * Math.sin(betaRad) * Math.sin(gammaRad) - Math.sin(alphaRad) * Math.cos(gammaRad), Math.sin(alphaRad) * Math.sin(betaRad) * Math.sin(gammaRad) + Math.cos(alphaRad) * Math.cos(gammaRad), Math.cos(betaRad) * Math.sin(gammaRad)],
-                [Math.cos(alphaRad) * Math.sin(betaRad) * Math.cos(gammaRad) + Math.sin(alphaRad) * Math.sin(gammaRad), Math.sin(alphaRad) * Math.sin(betaRad) * Math.cos(gammaRad) - Math.cos(alphaRad) * Math.sin(gammaRad), Math.cos(betaRad) * Math.cos(gammaRad)]
-            ];
-
-            // 计算新的x轴的方向
-            var newX = [R[0][0], R[1][0], R[2][0]];
-
             // 计算新的x轴与原x轴的夹角
-            var angle = Math.atan2(newX[1], newX[0]);
+            var angle = Math.atan2(betaRad, gammaRad);
 
-            // 更新alpha、beta、gamma和angle的显示值，并保留两位小数
+            // 更新beta、gamma和angle的显示值，并保留两位小数
             alphaElement.textContent = 'Alpha: ' + alpha.toFixed(2);
             betaElement.textContent = 'Beta: ' + beta.toFixed(2);
             gammaElement.textContent = 'Gamma: ' + gamma.toFixed(2);
@@ -60,7 +48,7 @@ startButton.addEventListener('click', function() {
             ctx.translate(canvas.width / 2, canvas.height / 2);
 
             // 旋转坐标系
-            ctx.rotate(-beta * Math.PI / 180);
+            ctx.rotate(-angle);
 
             // 将坐标系移回原位
             ctx.translate(-canvas.width / 2, -canvas.height / 2);
@@ -81,4 +69,3 @@ startButton.addEventListener('click', function() {
         angleElement.textContent = 'Angle: Not supported';
     }
 });
-``
