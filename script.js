@@ -17,46 +17,45 @@ ctx.lineTo(canvas.width - 100, canvas.height / 2);
 ctx.stroke();
 
 // 当用户点击开始按钮时，开始监听设备方向的变化
-startButton.addEventListener('click', function() {
-    if (window.DeviceOrientationEvent) {
-        window.addEventListener('deviceorientation', function(event) {
-            // 获取新的方向角度
-            var alpha = event.alpha;
-            var beta = event.beta;
-            var gamma = event.gamma;
 
-            // 更新alpha、beta和gamma的显示值，并保留两位小数
-            alphaElement.textContent = 'Alpha: ' + alpha.toFixed(2);
-            betaElement.textContent = 'Beta: ' + beta.toFixed(2);
-            gammaElement.textContent = 'Gamma: ' + gamma.toFixed(2);
+if (window.DeviceOrientationEvent) {
+    window.addEventListener('deviceorientation', function(event) {
+        // 获取新的方向角度
+        var alpha = event.alpha;
+        var beta = event.beta;
+        var gamma = event.gamma;
 
-            // 清除canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // 更新alpha、beta和gamma的显示值，并保留两位小数
+        alphaElement.textContent = 'Alpha: ' + alpha.toFixed(2);
+        betaElement.textContent = 'Beta: ' + beta.toFixed(2);
+        gammaElement.textContent = 'Gamma: ' + gamma.toFixed(2);
 
-            // 保存当前的绘图状态
-            ctx.save();
+        // 清除canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // 将坐标系移动到canvas的中心
-            ctx.translate(canvas.width / 2, canvas.height / 2);
+        // 保存当前的绘图状态
+        ctx.save();
 
-            // 旋转坐标系
-            ctx.rotate(-beta * Math.PI / 180);
+        // 将坐标系移动到canvas的中心
+        ctx.translate(canvas.width / 2, canvas.height / 2);
 
-            // 将坐标系移回原位
-            ctx.translate(-canvas.width / 2, -canvas.height / 2);
+        // 旋转坐标系
+        ctx.rotate(-beta * Math.PI / 180);
 
-            // 画一条水平线
-            ctx.beginPath();
-            ctx.moveTo(100, canvas.height / 2);
-            ctx.lineTo(canvas.width - 100, canvas.height / 2);
-            ctx.stroke();
+        // 将坐标系移回原位
+        ctx.translate(-canvas.width / 2, -canvas.height / 2);
 
-            // 恢复之前保存的绘图状态
-            ctx.restore();
-        });
-    } else {
-        alphaElement.textContent = 'Alpha: Not supported';
-        betaElement.textContent = 'Beta: Not supported';
-        gammaElement.textContent = 'Gamma: Not supported';
-    }
-});
+        // 画一条水平线
+        ctx.beginPath();
+        ctx.moveTo(100, canvas.height / 2);
+        ctx.lineTo(canvas.width - 100, canvas.height / 2);
+        ctx.stroke();
+
+        // 恢复之前保存的绘图状态
+        ctx.restore();
+    });
+} else {
+    alphaElement.textContent = 'Alpha: Not supported';
+    betaElement.textContent = 'Beta: Not supported';
+    gammaElement.textContent = 'Gamma: Not supported';
+};
