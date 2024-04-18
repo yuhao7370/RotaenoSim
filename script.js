@@ -12,8 +12,8 @@ var startButton = document.getElementById('startButton');
 
 // 画一条水平线
 ctx.beginPath();
-ctx.moveTo(50, canvas.height / 2);
-ctx.lineTo(canvas.width - 50, canvas.height / 2);
+ctx.moveTo(100, canvas.height / 2);
+ctx.lineTo(canvas.width - 100, canvas.height / 2);
 ctx.stroke();
 
 // 当用户点击开始按钮时，开始监听设备方向的变化
@@ -47,8 +47,8 @@ startButton.addEventListener('click', function() {
 
             // 画一条水平线
             ctx.beginPath();
-            ctx.moveTo(50, canvas.height / 2);
-            ctx.lineTo(canvas.width - 50, canvas.height / 2);
+            ctx.moveTo(100, canvas.height / 2);
+            ctx.lineTo(canvas.width - 100, canvas.height / 2);
             ctx.stroke();
 
             // 恢复之前保存的绘图状态
