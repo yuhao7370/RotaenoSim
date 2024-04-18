@@ -11,7 +11,7 @@ ctx.stroke();
 // 监听设备方向的变化
 window.addEventListener('deviceorientation', function(event) {
     // 获取新的方向角度
-    var alpha = event.alpha;
+    var beta = event.beta;
 
     // 清除canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -23,7 +23,7 @@ window.addEventListener('deviceorientation', function(event) {
     ctx.translate(canvas.width / 2, canvas.height / 2);
 
     // 旋转坐标系
-    ctx.rotate(-alpha * Math.PI / 180);
+    ctx.rotate(-beta * Math.PI / 180);
 
     // 将坐标系移回原位
     ctx.translate(-canvas.width / 2, -canvas.height / 2);
