@@ -2,6 +2,11 @@
 var canvas = document.getElementById('myCanvas');
 var ctx = canvas.getContext('2d');
 
+// 获取显示alpha、beta和gamma的元素
+var alphaElement = document.getElementById('alpha');
+var betaElement = document.getElementById('beta');
+var gammaElement = document.getElementById('gamma');
+
 // 画一条水平线
 ctx.beginPath();
 ctx.moveTo(50, canvas.height / 2);
@@ -11,7 +16,14 @@ ctx.stroke();
 // 监听设备方向的变化
 window.addEventListener('deviceorientation', function(event) {
     // 获取新的方向角度
+    var alpha = event.alpha;
     var beta = event.beta;
+    var gamma = event.gamma;
+
+    // 更新alpha、beta和gamma的显示值
+    alphaElement.textContent = 'Alpha: ' + alpha;
+    betaElement.textContent = 'Beta: ' + beta;
+    gammaElement.textContent = 'Gamma: ' + gamma;
 
     // 清除canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
