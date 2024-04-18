@@ -26,14 +26,29 @@ startButton.addEventListener('click', function() {
             var beta = event.beta;
             var gamma = event.gamma;
 
-            // 计算设备在三维空间中的旋转角度
-            var angle = Math.sqrt(alpha * alpha + beta * beta + gamma * gamma);
+            // 将角度转换为弧度
+            var alphaRad = alpha * Math.PI / 180;
+            var betaRad = beta * Math.PI / 180;
+            var gammaRad = gamma * Math.PI / 180;
+
+            // 计算旋转矩阵
+            var R = [
+                [Math.cos(alphaRad) * Math.cos(betaRad), Math.sin(alphaRad) * Math.cos(betaRad), -Math.sin(betaRad)],
+                [Math.cos(alphaRad) * Math.sin(betaRad) * Math.sin(gammaRad) - Math.sin(alphaRad) * Math.cos(gammaRad), Math.sin(alphaRad) * Math.sin(betaRad) * Math.sin(gammaRad) + Math.cos(alphaRad) * Math.cos(gammaRad), Math.cos(betaRad) * Math.sin(gammaRad)],
+                [Math.cos(alphaRad) * Math.sin(betaRad) * Math.cos(gammaRad) + Math.sin(alphaRad) * Math.sin(gammaRad), Math.sin(alphaRad) * Math.sin(betaRad) * Math.cos(gammaRad) - Math.cos(alphaRad) * Math.sin(gammaRad), Math.cos(betaRad) * Math.cos(gammaRad)]
+            ];
+
+            // 计算新的x轴的方向
+            var newX = [R[0][0], R[1][0], R[2][0]];
+
+            // 计算新的x轴与原x轴的夹角
+            var angle = Math.atan2(newX[1], newX[0]);
 
             // 更新alpha、beta、gamma和angle的显示值，并保留两位小数
             alphaElement.textContent = 'Alpha: ' + alpha.toFixed(2);
             betaElement.textContent = 'Beta: ' + beta.toFixed(2);
             gammaElement.textContent = 'Gamma: ' + gamma.toFixed(2);
-            angleElement.textContent = 'Angle: ' + angle.toFixed(2);
+            angleElement.textContent = 'Angle: ' + (angle * 180 / Math.PI).toFixed(2);  // 将弧度转换为角度
 
             // 清除canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -66,3 +81,4 @@ startButton.addEventListener('click', function() {
         angleElement.textContent = 'Angle: Not supported';
     }
 });
+``
