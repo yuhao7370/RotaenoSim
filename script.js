@@ -2,10 +2,11 @@
 var canvas = document.getElementById('myCanvas');
 var ctx = canvas.getContext('2d');
 
-// 获取显示alpha、beta和gamma的元素
+// 获取显示alpha、beta、gamma和angle的元素
 var alphaElement = document.getElementById('alpha');
 var betaElement = document.getElementById('beta');
 var gammaElement = document.getElementById('gamma');
+var angleElement = document.getElementById('angle');
 
 // 获取开始按钮
 var startButton = document.getElementById('startButton');
@@ -25,10 +26,14 @@ startButton.addEventListener('click', function() {
             var beta = event.beta;
             var gamma = event.gamma;
 
-            // 更新alpha、beta和gamma的显示值，并保留两位小数
+            // 计算设备在三维空间中的旋转角度
+            var angle = Math.sqrt(alpha * alpha + beta * beta + gamma * gamma);
+
+            // 更新alpha、beta、gamma和angle的显示值，并保留两位小数
             alphaElement.textContent = 'Alpha: ' + alpha.toFixed(2);
             betaElement.textContent = 'Beta: ' + beta.toFixed(2);
             gammaElement.textContent = 'Gamma: ' + gamma.toFixed(2);
+            angleElement.textContent = 'Angle: ' + angle.toFixed(2);
 
             // 清除canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -58,5 +63,6 @@ startButton.addEventListener('click', function() {
         alphaElement.textContent = 'Alpha: Not supported';
         betaElement.textContent = 'Beta: Not supported';
         gammaElement.textContent = 'Gamma: Not supported';
+        angleElement.textContent = 'Angle: Not supported';
     }
 });
