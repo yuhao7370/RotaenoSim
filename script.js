@@ -25,10 +25,10 @@ startButton.addEventListener('click', function() {
             var beta = event.beta;
             var gamma = event.gamma;
 
-            // 更新alpha、beta和gamma的显示值
-            alphaElement.textContent = 'Alpha: ' + alpha;
-            betaElement.textContent = 'Beta: ' + beta;
-            gammaElement.textContent = 'Gamma: ' + gamma;
+            // 更新alpha、beta和gamma的显示值，并保留两位小数
+            alphaElement.textContent = 'Alpha: ' + alpha.toFixed(2);
+            betaElement.textContent = 'Beta: ' + beta.toFixed(2);
+            gammaElement.textContent = 'Gamma: ' + gamma.toFixed(2);
 
             // 清除canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
