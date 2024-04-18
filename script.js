@@ -26,15 +26,8 @@ startButton.addEventListener('click', function() {
             var beta = event.beta;
             var gamma = event.gamma;
 
-            // 将角度转换为弧度
-            var betaRad = beta * Math.PI / 180;
-            var gammaRad = gamma * Math.PI / 180;
-
-            // 计算新的x轴的方向
-            var newX = [Math.cos(betaRad), Math.sin(betaRad) * Math.sin(gammaRad), Math.sin(betaRad) * Math.cos(gammaRad)];
-
-            // 计算新的x轴与原x轴的夹角
-            var angle = Math.atan2(newX[1], newX[0]);
+            // 使用beta和gamma的组合来计算角度
+            var angle = Math.atan2(beta, gamma);
 
             // 更新alpha、beta、gamma和angle的显示值，并保留两位小数
             alphaElement.textContent = 'Alpha: ' + alpha.toFixed(2);
