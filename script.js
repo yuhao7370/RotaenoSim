@@ -47,6 +47,7 @@ function calculateUnitNormalVector(alpha, beta, gamma) {
 
 function calc_vector_angle(vector1, vector2) {
     var angle = Math.acos((vector1[0] * vector2[0] + vector1[1] * vector2[1] + vector1[2] * vector2[2]) / (Math.sqrt(vector1[0] * vector1[0] + vector1[1] * vector1[1] + vector1[2] * vector1[2]) * Math.sqrt(vector2[0] * vector2[0] + vector2[1] * vector2[1] + vector2[2] * vector2[2])));
+    console.log('Angle:', angle);
     return angle; // 计算两个向量之间的夹角
 }
 
@@ -59,6 +60,10 @@ startButton.addEventListener('click', function() {
             var beta = event.beta;
             var gamma = event.gamma;
 
+            var alpha = alpha ? alpha : 0;
+            var beta = beta ? beta : 0;
+            var gamma = gamma ? gamma : 0;
+
             // 使用beta和gamma的组合来计算角度
             var angle = Math.atan2(beta, gamma);
 
@@ -70,10 +75,10 @@ startButton.addEventListener('click', function() {
             var vector = calculateUnitNormalVector(alpha, beta, gamma); // 手机屏幕平面的法向量
             var coordinate = [-vector[0], -vector[1], -vector[2]]; // 手机屏幕平中心在单位坐标系中的坐标
             z = [0, 0, 1]
-            var anglez = calc_vector_angle(vector, z); // 计算手机屏幕平面与z轴的夹角
+            var anglez = calc_vector_angle(coordinate, z); // 计算手机屏幕平面与z轴的夹角
 
             vectorElement.textContent = 'Vector: [' + vector[0].toFixed(2) + ', ' + vector[1].toFixed(2) + ', ' + vector[2].toFixed(2) + ']';
-            angleElement.textContent = 'Angle: ' + anglez.toFixed(2);
+            angleElement.textContent = 'Angle: ' + anglez;
 
             // 清除canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
