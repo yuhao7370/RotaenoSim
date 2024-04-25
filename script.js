@@ -6,7 +6,7 @@ var ctx = canvas.getContext('2d');
 var alphaElement = document.getElementById('alpha');
 var betaElement = document.getElementById('beta');
 var gammaElement = document.getElementById('gamma');
-var vectorElement = document.getElementById('angle');
+var angleElement = document.getElementById('angle');
 
 // 获取开始按钮
 var startButton = document.getElementById('startButton');
@@ -17,25 +17,31 @@ ctx.moveTo(100, canvas.height / 2);
 ctx.lineTo(canvas.width - 100, canvas.height / 2);
 ctx.stroke();
 
-// 当用户点击开始按钮时，开始监听设备方向的变化
-// 获取canvas元素和其上下文
-var canvas = document.getElementById('myCanvas');
-var ctx = canvas.getContext('2d');
+function calculateUnitNormalVector(alpha, beta, gamma) {
+    // 将角度转换为弧度
+    alpha = alpha * Math.PI / 180;
+    beta = beta * Math.PI / 180;
+    gamma = gamma * Math.PI / 180;
 
-// 获取显示alpha、beta、gamma和angle的元素
-var alphaElement = document.getElementById('alpha');
-var betaElement = document.getElementById('beta');
-var gammaElement = document.getElementById('gamma');
-var vectorElement = document.getElementById('angle');
+    // 计算旋转矩阵
+    var rotationMatrix = [
+        [Math.cos(alpha) * Math.cos(beta), Math.cos(alpha) * Math.sin(beta) * Math.sin(gamma) - Math.sin(alpha) * Math.cos(gamma), Math.cos(alpha) * Math.sin(beta) * Math.cos(gamma) + Math.sin(alpha) * Math.sin(gamma)],
+        [Math.sin(alpha) * Math.cos(beta), Math.sin(alpha) * Math.sin(beta) * Math.sin(gamma) + Math.cos(alpha) * Math.cos(gamma), Math.sin(alpha) * Math.sin(beta) * Math.cos(gamma) - Math.cos(alpha) * Math.sin(gamma)],
+        [-Math.sin(beta), Math.cos(beta) * Math.sin(gamma), Math.cos(beta) * Math.cos(gamma)]
+    ];
 
-// 获取开始按钮
-var startButton = document.getElementById('startButton');
+    // 原始单位法向量
+    var originalUnitNormalVector = [0, 0, 1];
 
-// 画一条水平线
-ctx.beginPath();
-ctx.moveTo(100, canvas.height / 2);
-ctx.lineTo(canvas.width - 100, canvas.height / 2);
-ctx.stroke();
+    // 计算旋转后的单位法向量
+    var rotatedUnitNormalVector = [
+        rotationMatrix[0][0] * originalUnitNormalVector[0] + rotationMatrix[0][1] * originalUnitNormalVector[1] + rotationMatrix[0][2] * originalUnitNormalVector[2],
+        rotationMatrix[1][0] * originalUnitNormalVector[0] + rotationMatrix[1][1] * originalUnitNormalVector[1] + rotationMatrix[1][2] * originalUnitNormalVector[2],
+        rotationMatrix[2][0] * originalUnitNormalVector[0] + rotationMatrix[2][1] * originalUnitNormalVector[1] + rotationMatrix[2][2] * originalUnitNormalVector[2]
+    ];
+
+    return rotatedUnitNormalVector;
+}
 
 // 当用户点击开始按钮时，开始监听设备方向的变化
 startButton.addEventListener('click', function() {
@@ -45,22 +51,21 @@ startButton.addEventListener('click', function() {
             var alpha = event.alpha;
             var beta = event.beta;
             var gamma = event.gamma;
-            
-            // 将角度转换为弧度
-            alpharad = alpha * Math.PI / 180;
-            betarad = beta * Math.PI / 180;
-            gammarad = gamma * Math.PI / 180;
-            var vector = {
-                x: Math.cos(alpharad) * Math.cos(betarad),
-                y: Math.sin(alpharad) * Math.cos(betarad),
-                z: Math.sin(betarad)
-            };
+
+            // 使用beta和gamma的组合来计算角度
+            var angle = Math.atan2(beta, gamma);
 
             // 更新alpha、beta、gamma和angle的显示值，并保留两位小数
             alphaElement.textContent = 'Alpha: ' + alpha.toFixed(2);
             betaElement.textContent = 'Beta: ' + beta.toFixed(2);
             gammaElement.textContent = 'Gamma: ' + gamma.toFixed(2);
-            vectorElement.textContent = 'Vector: ' + vector.x.toFixed(2) + ', ' + vector.y.toFixed(2) + ', ' + vector.z.toFixed(2);
+
+
+            
+            
+            var vector = calculateUnitNormalVector(alpha, beta, gamma);
+
+            vectorElement.textContent = 'Vector: [' + vector[0].toFixed(2) + ', ' + vector[1].toFixed(2) + ', ' + vector[2].toFixed(2) + ']';
 
             // 清除canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -72,7 +77,7 @@ startButton.addEventListener('click', function() {
             ctx.translate(canvas.width / 2, canvas.height / 2);
 
             // 旋转坐标系
-            ctx.rotate(beta);
+            ctx.rotate(angle);
 
             // 将坐标系移回原位
             ctx.translate(-canvas.width / 2, -canvas.height / 2);
