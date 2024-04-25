@@ -45,19 +45,22 @@ startButton.addEventListener('click', function() {
             var alpha = event.alpha;
             var beta = event.beta;
             var gamma = event.gamma;
-
-            // 使用beta和gamma的组合来计算角度
+            
+            // 将角度转换为弧度
+            alpharad = alpha * Math.PI / 180;
+            betarad = beta * Math.PI / 180;
+            gammarad = gamma * Math.PI / 180;
             var vector = {
-                x: Math.cos(alpha) * Math.cos(beta),
-                y: Math.sin(alpha) * Math.cos(beta),
-                z: Math.sin(beta)
+                x: Math.cos(alpharad) * Math.cos(betarad),
+                y: Math.sin(alpharad) * Math.cos(betarad),
+                z: Math.sin(betarad)
             };
 
             // 更新alpha、beta、gamma和angle的显示值，并保留两位小数
             alphaElement.textContent = 'Alpha: ' + alpha.toFixed(2);
             betaElement.textContent = 'Beta: ' + beta.toFixed(2);
             gammaElement.textContent = 'Gamma: ' + gamma.toFixed(2);
-            vectorElement.textContent = 'Vector: ' + vector.x.toFixed(2) + ', ' + vector.y.toFixed(2) + ', ' + vector.z.toFixed(2);
+            vectorElement.textContent = 'Vector: ' + vector.x.toFixed(2);
 
             // 清除canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -69,7 +72,7 @@ startButton.addEventListener('click', function() {
             ctx.translate(canvas.width / 2, canvas.height / 2);
 
             // 旋转坐标系
-            ctx.rotate(angle);
+            ctx.rotate(beta);
 
             // 将坐标系移回原位
             ctx.translate(-canvas.width / 2, -canvas.height / 2);
