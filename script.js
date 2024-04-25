@@ -115,8 +115,10 @@ startButton.addEventListener('click', function() {
             
             // var flag = false;
             if(beta < 0) {
-            gameangledeg = gameangledeg - 180;
-                // flag = true;
+                gameangledeg = - gameangledeg;
+            }
+            else {
+                gameangledeg = 360 - gameangledeg;
             }
             vectorElement.textContent = 'Vector: [' + vector[0].toFixed(2) + ', ' + vector[1].toFixed(2) + ', ' + vector[2].toFixed(2) + ']';
             angleElement.textContent = 'Angle: ' + gameangledeg.toFixed(2) + '°';
