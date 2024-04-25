@@ -114,7 +114,7 @@ startButton.addEventListener('click', function() {
             var gameangledeg = gameangle * 180 / Math.PI; // rad to degree
             
             // var flag = false;
-            if(beta * gamma < 0) {
+            if(beta * gamma > 0) {
                 gameangledeg = (360 - gameangledeg);
             }
             vectorElement.textContent = 'Vector: [' + vector[0].toFixed(2) + ', ' + vector[1].toFixed(2) + ', ' + vector[2].toFixed(2) + ']';
