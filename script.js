@@ -6,7 +6,7 @@ var ctx = canvas.getContext('2d');
 var alphaElement = document.getElementById('alpha');
 var betaElement = document.getElementById('beta');
 var gammaElement = document.getElementById('gamma');
-var angleElement = document.getElementById('angle');
+var vectorElement = document.getElementById('vector');
 
 // 获取开始按钮
 var startButton = document.getElementById('startButton');
@@ -39,7 +39,7 @@ function calculateUnitNormalVector(alpha, beta, gamma) {
         rotationMatrix[1][0] * originalUnitNormalVector[0] + rotationMatrix[1][1] * originalUnitNormalVector[1] + rotationMatrix[1][2] * originalUnitNormalVector[2],
         rotationMatrix[2][0] * originalUnitNormalVector[0] + rotationMatrix[2][1] * originalUnitNormalVector[1] + rotationMatrix[2][2] * originalUnitNormalVector[2]
     ];
-    
+
     console.log('Rotated Unit Normal Vector:', rotatedUnitNormalVector);
     return rotatedUnitNormalVector;
 }
