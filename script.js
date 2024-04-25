@@ -18,6 +18,27 @@ ctx.lineTo(canvas.width - 100, canvas.height / 2);
 ctx.stroke();
 
 // 当用户点击开始按钮时，开始监听设备方向的变化
+// 获取canvas元素和其上下文
+var canvas = document.getElementById('myCanvas');
+var ctx = canvas.getContext('2d');
+
+// 获取显示alpha、beta、gamma和angle的元素
+var alphaElement = document.getElementById('alpha');
+var betaElement = document.getElementById('beta');
+var gammaElement = document.getElementById('gamma');
+var angleElement = document.getElementById('angle');
+
+// 获取开始按钮
+var startButton = document.getElementById('startButton');
+
+// 画一条水平线
+ctx.beginPath();
+ctx.moveTo(100, canvas.height / 2);
+ctx.lineTo(canvas.width - 100, canvas.height / 2);
+ctx.stroke();
+
+// 当用户点击开始按钮时，开始监听设备方向的变化
+// 当用户点击开始按钮时，开始监听设备方向的变化
 startButton.addEventListener('click', function() {
     if (window.DeviceOrientationEvent) {
         window.addEventListener('deviceorientation', function(event) {
@@ -26,43 +47,28 @@ startButton.addEventListener('click', function() {
             var beta = event.beta;
             var gamma = event.gamma;
 
-            // 使用beta和gamma的组合来计算角度
-            var angle = Math.atan2(beta, gamma);
+            // 将角度转换为弧度
+            alpha = alpha * Math.PI / 180;
+            beta = beta * Math.PI / 180;
+            gamma = gamma * Math.PI / 180;
 
-            // 更新alpha、beta、gamma和angle的显示值，并保留两位小数
-            alphaElement.textContent = 'Alpha: ' + alpha.toFixed(2);
-            betaElement.textContent = 'Beta: ' + beta.toFixed(2);
-            gammaElement.textContent = 'Gamma: ' + gamma.toFixed(2);
-            angleElement.textContent = 'Angle: ' + (angle * 180 / Math.PI).toFixed(2);  // 将弧度转换为角度
+            // 计算单位法向量
+            var vector = {
+                x: Math.cos(alpha) * Math.cos(beta),
+                y: Math.sin(alpha) * Math.cos(beta),
+                z: Math.sin(beta)
+            };
 
-            // 清除canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // 保存当前的绘图状态
-            ctx.save();
-
-            // 将坐标系移动到canvas的中心
-            ctx.translate(canvas.width / 2, canvas.height / 2);
-
-            // 旋转坐标系
-            ctx.rotate(angle);
-
-            // 将坐标系移回原位
-            ctx.translate(-canvas.width / 2, -canvas.height / 2);
-
-            // 画一条水平线
-            ctx.beginPath();
-            ctx.moveTo(100, canvas.height / 2);
-            ctx.lineTo(canvas.width - 100, canvas.height / 2);
-            ctx.stroke();
-
-            // 恢复之前保存的绘图状态
-            ctx.restore();
+            // 更新alpha、beta、gamma和vector的显示值，并保留两位小数
+            alphaElement.textContent = 'Alpha: ' + (alpha * 180 / Math.PI).toFixed(2);  // 将弧度转换为角度
+            betaElement.textContent = 'Beta: ' + (beta * 180 / Math.PI).toFixed(2);  // 将弧度转换为角度
+            gammaElement.textContent = 'Gamma: ' + (gamma * 180 / Math.PI).toFixed(2);  // 将弧度转换为角度
+            vectorElement.textContent = 'Vector: (' + vector.x.toFixed(2) + ', ' + vector.y.toFixed(2) + ', ' + vector.z.toFixed(2) + ')';
         });
     } else {
         alphaElement.textContent = 'Alpha: Not supported';
         betaElement.textContent = 'Beta: Not supported';
         gammaElement.textContent = 'Gamma: Not supported';
-        angleElement.textContent = 'Angle: Not supported';
+        vectorElement.textContent = 'Vector: Not supported';
     }
 });
