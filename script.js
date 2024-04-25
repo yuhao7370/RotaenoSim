@@ -104,7 +104,7 @@ startButton.addEventListener('click', function() {
             var anglez = calc_vector_angle(vector, z); // 计算手机屏幕平面与z轴的夹角 rad
             var anglezdeg = anglez * 180 / Math.PI; // rad to degree
             var zvector = [0, 0, 1 / cos(anglez)]; // z轴在手机屏幕平面中的投影
-            var basevactor = zvector - vector; // 游戏基准向量
+            var basevactor = [zvector[0] - vector[0], zvector[1] - vector[1], zvector[2] - vector[2]]; // 游戏基准向量
             var splitvector = calculateScreenSplitLineVector(alpha, beta, gamma); // 分割线的向量
             var gameangle = calc_vector_angle(basevactor, splitvector); // 游戏基准向量与分割线的夹角
             var gameangledeg = gameangle * 180 / Math.PI; // rad to degree
