@@ -7,6 +7,7 @@ var alphaElement = document.getElementById('alpha');
 var betaElement = document.getElementById('beta');
 var gammaElement = document.getElementById('gamma');
 var vectorElement = document.getElementById('vector');
+var angleElement = document.getElementById('angle');
 
 // 获取开始按钮
 var startButton = document.getElementById('startButton');
@@ -71,7 +72,8 @@ startButton.addEventListener('click', function() {
             z = [0, 0, 1]
             var anglez = calc_vector_angle(vector, z); // 计算手机屏幕平面与z轴的夹角
 
-            vectorElement.textContent = 'Vector: [' + vector[0].toFixed(2) + ', ' + vector[1].toFixed(2) + ', ' + vector[2].toFixed(2) + '] Angle with z: ' + anglez.toFixed(2) + ' rad';
+            vectorElement.textContent = 'Vector: [' + vector[0].toFixed(2) + ', ' + vector[1].toFixed(2) + ', ' + vector[2].toFixed(2) + ']';
+            angleElement.textContent = 'Angle: ' + anglez.toFixed(2);
 
             // 清除canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -102,5 +104,6 @@ startButton.addEventListener('click', function() {
         betaElement.textContent = 'Beta: Not supported';
         gammaElement.textContent = 'Gamma: Not supported';
         vectorElement.textContent = 'Vector: Not supported';
+        angleElement.textContent = 'Angle: Not supported';
     }
 });
