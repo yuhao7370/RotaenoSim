@@ -44,6 +44,11 @@ function calculateUnitNormalVector(alpha, beta, gamma) {
     return rotatedUnitNormalVector;
 }
 
+function calc_vector_angle(vector1, vector2) {
+    var angle = Math.acos((vector1[0] * vector2[0] + vector1[1] * vector2[1] + vector1[2] * vector2[2]) / (Math.sqrt(vector1[0] * vector1[0] + vector1[1] * vector1[1] + vector1[2] * vector1[2]) * Math.sqrt(vector2[0] * vector2[0] + vector2[1] * vector2[1] + vector2[2] * vector2[2])));
+    return angle; // 计算两个向量之间的夹角
+}
+
 // 当用户点击开始按钮时，开始监听设备方向的变化
 startButton.addEventListener('click', function() {
     if (window.DeviceOrientationEvent) {
@@ -61,9 +66,12 @@ startButton.addEventListener('click', function() {
             betaElement.textContent = 'Beta: ' + beta.toFixed(2);
             gammaElement.textContent = 'Gamma: ' + gamma.toFixed(2);
 
-            var vector = calculateUnitNormalVector(alpha, beta, gamma);
+            var vector = calculateUnitNormalVector(alpha, beta, gamma); // 手机屏幕平面的法向量
+            var coordinate = [-vector[0], -vector[1], -vector[2]]; // 手机屏幕平中心在单位坐标系中的坐标
+            z = [0, 0, 1]
+            var anglez = calc_vector_angle(vector, z); // 计算手机屏幕平面与z轴的夹角
 
-            vectorElement.textContent = 'Vector: [' + vector[0].toFixed(2) + ', ' + vector[1].toFixed(2) + ', ' + vector[2].toFixed(2) + ']';
+            vectorElement.textContent = 'Vector: [' + vector[0].toFixed(2) + ', ' + vector[1].toFixed(2) + ', ' + vector[2].toFixed(2) + ']', 'Angle with z: ' + anglez.toFixed(2) + ' rad';
 
             // 清除canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
