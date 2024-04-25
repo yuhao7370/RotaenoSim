@@ -115,7 +115,7 @@ startButton.addEventListener('click', function() {
             
             // var flag = false;
             if(beta < 0) {
-                gameangledeg = gameangledeg;
+                gameangledeg = - (180 - gameangledeg);
             }
             else {
                 gameangledeg = 360 - gameangledeg;
