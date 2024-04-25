@@ -71,7 +71,7 @@ startButton.addEventListener('click', function() {
             z = [0, 0, 1]
             var anglez = calc_vector_angle(vector, z); // 计算手机屏幕平面与z轴的夹角
 
-            vectorElement.textContent = 'Vector: [' + vector[0].toFixed(2) + ', ' + vector[1].toFixed(2) + ', ' + vector[2].toFixed(2) + ']', 'Angle with z: ' + anglez.toFixed(2) + ' rad';
+            vectorElement.textContent = 'Vector: [' + vector[0].toFixed(2) + ', ' + vector[1].toFixed(2) + ', ' + vector[2].toFixed(2) + '] Angle with z: ' + anglez.toFixed(2) + ' rad';
 
             // 清除canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
