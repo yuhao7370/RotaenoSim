@@ -39,7 +39,8 @@ function calculateUnitNormalVector(alpha, beta, gamma) {
         rotationMatrix[1][0] * originalUnitNormalVector[0] + rotationMatrix[1][1] * originalUnitNormalVector[1] + rotationMatrix[1][2] * originalUnitNormalVector[2],
         rotationMatrix[2][0] * originalUnitNormalVector[0] + rotationMatrix[2][1] * originalUnitNormalVector[1] + rotationMatrix[2][2] * originalUnitNormalVector[2]
     ];
-
+    
+    console.log('Rotated Unit Normal Vector:', rotatedUnitNormalVector);
     return rotatedUnitNormalVector;
 }
 
@@ -60,9 +61,6 @@ startButton.addEventListener('click', function() {
             betaElement.textContent = 'Beta: ' + beta.toFixed(2);
             gammaElement.textContent = 'Gamma: ' + gamma.toFixed(2);
 
-
-            
-            
             var vector = calculateUnitNormalVector(alpha, beta, gamma);
 
             vectorElement.textContent = 'Vector: [' + vector[0].toFixed(2) + ', ' + vector[1].toFixed(2) + ', ' + vector[2].toFixed(2) + ']';
