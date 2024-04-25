@@ -75,10 +75,13 @@ startButton.addEventListener('click', function() {
             var vector = calculateUnitNormalVector(alpha, beta, gamma); // 手机屏幕平面的法向量
             var coordinate = [-vector[0], -vector[1], -vector[2]]; // 手机屏幕平中心在单位坐标系中的坐标
             z = [0, 0, 1]
-            var anglez = calc_vector_angle(coordinate, z); // 计算手机屏幕平面与z轴的夹角
+            var anglez = calc_vector_angle(vector, z); // 计算手机屏幕平面与z轴的夹角 rad
+            var anglezdeg = anglez * 180 / Math.PI; // rad to degree
+            var zvector = [0, 0, 1 / cos(anglez)]; // z轴在手机屏幕平面中的投影
+            var basevactor = zvector - vector; // 游戏基准向量
 
             vectorElement.textContent = 'Vector: [' + vector[0].toFixed(2) + ', ' + vector[1].toFixed(2) + ', ' + vector[2].toFixed(2) + ']';
-            angleElement.textContent = 'Angle: ' + anglez;
+            angleElement.textContent = 'Angle: ' + anglezdeg;
 
             // 清除canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
