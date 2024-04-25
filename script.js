@@ -60,7 +60,7 @@ startButton.addEventListener('click', function() {
             alphaElement.textContent = 'Alpha: ' + alpha.toFixed(2);
             betaElement.textContent = 'Beta: ' + beta.toFixed(2);
             gammaElement.textContent = 'Gamma: ' + gamma.toFixed(2);
-            vectorElement.textContent = 'Vector: ' + vector.x.toFixed(2);
+            vectorElement.textContent = 'Vector: ' + vector.x.toFixed(2) + ', ' + vector.y.toFixed(2) + ', ' + vector.z.toFixed(2);
 
             // 清除canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
