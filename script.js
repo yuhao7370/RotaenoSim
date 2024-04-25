@@ -115,7 +115,7 @@ startButton.addEventListener('click', function() {
             
             // var flag = false;
             if(beta < 0) {
-                gameangledeg = - (180 - gameangledeg);
+                gameangledeg = (180 + gameangledeg);
             }
             else {
                 gameangledeg = 360 - gameangledeg;
@@ -134,6 +134,7 @@ startButton.addEventListener('click', function() {
 
             // 旋转坐标系
             // ctx.rotate(angle);
+            gameangle = gameangledeg * Math.PI / 180; // degree to rad
             ctx.rotate(gameangle); // 旋转坐标系，使得手机屏幕平面与分割线平行
 
             // 将坐标系移回原位
