@@ -107,11 +107,11 @@ startButton.addEventListener('click', function() {
             var basevactor = zvector - vector; // 游戏基准向量
             var splitvector = calculateScreenSplitLineVector(alpha, beta, gamma); // 分割线的向量
             var gameangle = calc_vector_angle(basevactor, splitvector); // 游戏基准向量与分割线的夹角
-            gameangle = gameangle * 180 / Math.PI; // rad to degree
+            var gameangledeg = gameangle * 180 / Math.PI; // rad to degree
 
 
             vectorElement.textContent = 'Vector: [' + vector[0].toFixed(2) + ', ' + vector[1].toFixed(2) + ', ' + vector[2].toFixed(2) + ']';
-            angleElement.textContent = 'Angle: ' + gameangle;
+            angleElement.textContent = 'Angle: ' + gameangledeg;
 
             // 清除canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -123,7 +123,8 @@ startButton.addEventListener('click', function() {
             ctx.translate(canvas.width / 2, canvas.height / 2);
 
             // 旋转坐标系
-            ctx.rotate(angle);
+            // ctx.rotate(angle);
+            ctx.rotate(gameangle); // 旋转坐标系，使得手机屏幕平面与分割线平行
 
             // 将坐标系移回原位
             ctx.translate(-canvas.width / 2, -canvas.height / 2);
