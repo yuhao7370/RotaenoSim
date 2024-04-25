@@ -119,7 +119,7 @@ startButton.addEventListener('click', function() {
                 flag = true;
             }
             vectorElement.textContent = 'Vector: [' + vector[0].toFixed(2) + ', ' + vector[1].toFixed(2) + ', ' + vector[2].toFixed(2) + ']';
-            angleElement.textContent = 'Angle: ' + gameangledeg + '°' + (flag ? ' (反向)' : '');
+            angleElement.textContent = 'Angle: ' + gameangledeg.toFixed(2) + '°' + (flag ? ' (反向)' : '');
 
             // 清除canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
