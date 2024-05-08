@@ -119,9 +119,6 @@ window.addEventListener('deviceorientation', function(event) {
     var beta = beta ? beta : 0;
     var gamma = gamma ? gamma : 30;
 
-    // 使用beta和gamma的组合来计算角度
-    var angle = Math.atan2(beta, gamma);
-
     // 更新alpha、beta、gamma和angle的显示值，并保留两位小数
     alphaElement.textContent = 'Alpha: ' + alpha.toFixed(2);
     betaElement.textContent = 'Beta: ' + beta.toFixed(2);
