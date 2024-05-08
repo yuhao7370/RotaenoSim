@@ -79,6 +79,12 @@ function calc_vector_angle(vector1, vector2) {
 
 // 当用户点击开始按钮时，开始监听设备方向的变化
 startButton.addEventListener('click', function() {
+    DeviceOrientationEvent.requestPermission()
+    .then(response => {
+        if (response == 'granted') {
+            console.log('Permission granted');
+        }
+    })
     if (window.DeviceOrientationEvent) {
         window.addEventListener('deviceorientation', function(event) {
             // 获取新的方向角度
@@ -114,7 +120,7 @@ startButton.addEventListener('click', function() {
             var gameangledeg = gameangle * 180 / Math.PI; // rad to degree
             
             // var flag = false;
-            if(beta * gamma > 0) {
+            if((180 - alpha) * beta * gamma > 0) {
                 gameangledeg = (360 - gameangledeg);
             }
             vectorElement.textContent = 'Vector: [' + vector[0].toFixed(2) + ', ' + vector[1].toFixed(2) + ', ' + vector[2].toFixed(2) + ']';
