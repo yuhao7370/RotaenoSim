@@ -79,84 +79,100 @@ function calc_vector_angle(vector1, vector2) {
 
 // 当用户点击开始按钮时，开始监听设备方向的变化
 startButton.addEventListener('click', function() {
-    DeviceOrientationEvent.requestPermission()
-    .then(response => {
-        if (response == 'granted') {
-            console.log('Permission granted');
-        }
-    })
     if (window.DeviceOrientationEvent) {
-        window.addEventListener('deviceorientation', function(event) {
-            // 获取新的方向角度
-            var alpha = event.alpha;
-            var beta = event.beta;
-            var gamma = event.gamma;
+        // 如果是ios则请求权限
+        DeviceOrientationEvent.requestPermission()
+        .then(response => {
+            if (response == 'granted') {
+                console.log('Permission granted');
 
-            var alpha = alpha ? alpha : 0;
-            var beta = beta ? beta : 0;
-            var gamma = gamma ? gamma : 30;
+                // 权限被授予，添加deviceorientation事件监听器
+                window.addEventListener('deviceorientation', function(event) {
+                    // 获取新的方向角度
+                    var alpha = event.alpha ? event.alpha : 0;
+                    var beta = event.beta ? event.beta : 0;
+                    var gamma = event.gamma ? event.gamma : 30;
 
-            // 使用beta和gamma的组合来计算角度
-            var angle = Math.atan2(beta, gamma);
-
-            // 更新alpha、beta、gamma和angle的显示值，并保留两位小数
-            alphaElement.textContent = 'Alpha: ' + alpha.toFixed(2);
-            betaElement.textContent = 'Beta: ' + beta.toFixed(2);
-            gammaElement.textContent = 'Gamma: ' + gamma.toFixed(2);
-
-            var vector = calculateUnitNormalVector(alpha, beta, gamma); // 手机屏幕平面的法向量
-            var coordinate = [-vector[0], -vector[1], -vector[2]]; // 手机屏幕平中心在单位坐标系中的坐标
-            z = [0, 0, 1]
-            var anglez = calc_vector_angle(vector, z); // 计算手机屏幕平面与z轴的夹角 rad
-            var anglezdeg = anglez * 180 / Math.PI; // rad to degree
-            var zvector = [0, 0, 1 / Math.cos(anglez)]; // z轴在手机屏幕平面中的投影
-            console.log('Z Vector:', zvector);
-
-            var basevactor = [zvector[0] - vector[0], zvector[1] - vector[1], zvector[2] - vector[2]]; // 游戏基准向量
-            console.log('Base Vector:', basevactor);
-            var splitvector = calculateScreenSplitLineVector(alpha, beta, gamma); // 分割线的向量
-            console.log('Split Vector:', splitvector);
-            var gameangle = calc_vector_angle(basevactor, splitvector); // 游戏基准向量与分割线的夹角
-            var gameangledeg = gameangle * 180 / Math.PI; // rad to degree
-            
-            // var flag = false;
-            if((180 - alpha) * beta * gamma > 0) {
-                gameangledeg = (360 - gameangledeg);
+                    // 在这里你可以使用alpha、beta和gamma
+                });
+            } else {
+                // 权限被拒绝，显示一个提示给用户
+                console.log('Permission denied');
             }
-            vectorElement.textContent = 'Vector: [' + vector[0].toFixed(2) + ', ' + vector[1].toFixed(2) + ', ' + vector[2].toFixed(2) + ']';
-            angleElement.textContent = 'Angle: ' + gameangledeg.toFixed(2) + '°';
-
-            // 清除canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // 保存当前的绘图状态
-            ctx.save();
-
-            // 将坐标系移动到canvas的中心
-            ctx.translate(canvas.width / 2, canvas.height / 2);
-
-            // 旋转坐标系
-            // ctx.rotate(angle);
-            gameangle = gameangledeg * Math.PI / 180; // degree to rad
-            ctx.rotate(gameangle); // 旋转坐标系，使得手机屏幕平面与分割线平行
-
-            // 将坐标系移回原位
-            ctx.translate(-canvas.width / 2, -canvas.height / 2);
-
-            // 画一条水平线
-            ctx.beginPath();
-            ctx.moveTo(100, canvas.height / 2);
-            ctx.lineTo(canvas.width - 100, canvas.height / 2);
-            ctx.stroke();
-
-            // 恢复之前保存的绘图状态
-            ctx.restore();
+        })
+        .catch(error => {
+            // 处理可能出现的错误
+            console.error('Error occurred while requesting permission', error);
         });
     } else {
-        alphaElement.textContent = 'Alpha: Not supported';
-        betaElement.textContent = 'Beta: Not supported';
-        gammaElement.textContent = 'Gamma: Not supported';
-        vectorElement.textContent = 'Vector: Not supported';
-        angleElement.textContent = 'Angle: Not supported';
+        console.log('Device does not support DeviceOrientationEvent');
     }
 });
+
+window.addEventListener('deviceorientation', function(event) {
+    // 获取新的方向角度
+    var alpha = event.alpha;
+    var beta = event.beta;
+    var gamma = event.gamma;
+
+    var alpha = alpha ? alpha : 0;
+    var beta = beta ? beta : 0;
+    var gamma = gamma ? gamma : 30;
+
+    // 使用beta和gamma的组合来计算角度
+    var angle = Math.atan2(beta, gamma);
+
+    // 更新alpha、beta、gamma和angle的显示值，并保留两位小数
+    alphaElement.textContent = 'Alpha: ' + alpha.toFixed(2);
+    betaElement.textContent = 'Beta: ' + beta.toFixed(2);
+    gammaElement.textContent = 'Gamma: ' + gamma.toFixed(2);
+
+    var vector = calculateUnitNormalVector(alpha, beta, gamma); // 手机屏幕平面的法向量
+    var coordinate = [-vector[0], -vector[1], -vector[2]]; // 手机屏幕平中心在单位坐标系中的坐标
+    z = [0, 0, 1]
+    var anglez = calc_vector_angle(vector, z); // 计算手机屏幕平面与z轴的夹角 rad
+    var anglezdeg = anglez * 180 / Math.PI; // rad to degree
+    var zvector = [0, 0, 1 / Math.cos(anglez)]; // z轴在手机屏幕平面中的投影
+    console.log('Z Vector:', zvector);
+
+    var basevactor = [zvector[0] - vector[0], zvector[1] - vector[1], zvector[2] - vector[2]]; // 游戏基准向量
+    console.log('Base Vector:', basevactor);
+    var splitvector = calculateScreenSplitLineVector(alpha, beta, gamma); // 分割线的向量
+    console.log('Split Vector:', splitvector);
+    var gameangle = calc_vector_angle(basevactor, splitvector); // 游戏基准向量与分割线的夹角
+    var gameangledeg = gameangle * 180 / Math.PI; // rad to degree
+    
+    // var flag = false;
+    if((180 - alpha) * beta * gamma > 0) {
+        gameangledeg = (360 - gameangledeg);
+    }
+    vectorElement.textContent = 'Vector: [' + vector[0].toFixed(2) + ', ' + vector[1].toFixed(2) + ', ' + vector[2].toFixed(2) + ']';
+    angleElement.textContent = 'Angle: ' + gameangledeg.toFixed(2) + '°';
+
+    // 清除canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // 保存当前的绘图状态
+    ctx.save();
+
+    // 将坐标系移动到canvas的中心
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+
+    // 旋转坐标系
+    // ctx.rotate(angle);
+    gameangle = gameangledeg * Math.PI / 180; // degree to rad
+    ctx.rotate(gameangle); // 旋转坐标系，使得手机屏幕平面与分割线平行
+
+    // 将坐标系移回原位
+    ctx.translate(-canvas.width / 2, -canvas.height / 2);
+
+    // 画一条水平线
+    ctx.beginPath();
+    ctx.moveTo(100, canvas.height / 2);
+    ctx.lineTo(canvas.width - 100, canvas.height / 2);
+    ctx.stroke();
+
+    // 恢复之前保存的绘图状态
+    ctx.restore();
+});
+
