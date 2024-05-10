@@ -29,6 +29,10 @@
             video.muted = true;
             video.crossOrigin = "anonymous";
 
+            video.onerror = function(e) {
+                alert('视频加载失败');
+            };
+
             texture = new THREE.VideoTexture(video);
             texture.minFilter = THREE.LinearFilter;
             texture.format = THREE.RGBFormat;
