@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>全景视频播放器</title>
+    <style>
+        body { margin: 0; }
+        canvas { width: 100%; height: 100% }
+    </style>
+</head>
+<body>
+    <input type="file" id="videoUpload" accept="video/*" style="position: absolute; z-index: 1;">
+    <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/examples/jsm/controls/DeviceOrientationControls.js"></script>
+    <script>
+        var camera, scene, renderer;
+        var video, texture, material, mesh, controls;
+
+        init();
+        animate();
+
+        function init() {
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 1100);
+            camera.target = new THREE.Vector3(0, 0, 0);
+
+            scene = new THREE.Scene();
+
+            video = document.createElement('video');
+            video.loop = true;
+            video.muted = true;
+            video.crossOrigin = "anonymous";
+
+            texture = new THREE.VideoTexture(video);
+            texture.minFilter = THREE.LinearFilter;
+            texture.format = THREE.RGBFormat;
+
+            material = new THREE.MeshBasicMaterial({ map: texture });
+
+            var geometry = new THREE.SphereBufferGeometry(500, 60, 40);
+            geometry.scale(-1, 1, 1);
+
+            mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
+
+            renderer = new THREE.WebGLRenderer();
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            controls = new THREE.DeviceOrientationControls(camera);
+
+            window.addEventListener('resize', onWindowResize, false);
+            document.getElementById('videoUpload').addEventListener('change', handleVideoUpload, false);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        function handleVideoUpload(e) {
+            var file = e.target.files[0];
+            var url = URL.createObjectURL(file);
+            video.src = url;
+            video.load();
+            video.play();
+        }
+    </script>
+</body>
+</html>
