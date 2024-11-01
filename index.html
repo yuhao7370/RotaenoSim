@@ -43,6 +43,7 @@
             // 使用 fetch 发送数据到指定 IP 地址的端口 1096
             fetch(`http://${ipAddress}:1096/receiveData`, {
                 method: 'POST',
+                mode: 'cors', // 添加这一行
                 headers: {
                     'Content-Type': 'application/json'
                 },
