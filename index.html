@@ -1,32 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Canvas Rotation</title>
-    <style>
-        /* 增加字体大小 */
-        p {
-            font-size: 60px;
+    <meta charset="UTF-8">
+    <title>陀螺仪数据发送</title>
+    <script>
+        let ipAddress = '';
+
+        function startSending() {
+            ipAddress = document.getElementById('ipInput').value;
+            if (!ipAddress) {
+                alert('请输入有效的IP地址');
+                return;
+            }
+
+            if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+                // iOS 13+ 需要请求权限
+                DeviceOrientationEvent.requestPermission().then(function(permissionState) {
+                    if (permissionState === 'granted') {
+                        window.addEventListener('deviceorientation', handleOrientation);
+                    } else {
+                        alert('需要授予陀螺仪访问权限');
+                    }
+                }).catch(console.error);
+            } else {
+                // 非 iOS 13+ 设备
+                window.addEventListener('deviceorientation', handleOrientation);
+            }
         }
-    </style>
+
+        function handleOrientation(event) {
+            const data = {
+                alpha: event.alpha,
+                beta: event.beta,
+                gamma: event.gamma
+            };
+
+            // 更新页面上的数据显示
+            document.getElementById('alpha').textContent = data.alpha.toFixed(2);
+            document.getElementById('beta').textContent = data.beta.toFixed(2);
+            document.getElementById('gamma').textContent = data.gamma.toFixed(2);
+
+            // 使用 fetch 发送数据到指定 IP 地址的端口 1096
+            fetch(`http://${ipAddress}:1096/receiveData`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).catch(function(error) {
+                console.error('发送数据出错：', error);
+            });
+        }
+    </script>
 </head>
 <body>
-    <!-- 增加canvas的宽度和高度 -->
-    <canvas id="myCanvas" width="800" height="800" style="border:1px solid #d3d3d3;">
-        Your browser does not support the HTML5 canvas tag.
-    </canvas>
-    <button id="startButton">Start</button>
-    <p id="alpha">Alpha: </p>
-    <p id="beta">Beta: </p>
-    <p id="gamma">Gamma: </p>
-    <p id="vector">Vector: </p>
-    <p id="angle">Angle: </p>
-
-    <!-- 添加视频播放器 -->
-    <!-- <video id="videoPlayer" width="320" height="240" controls>
-        <source src="1.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video> -->
-
-    <script src="script.js"></script>
+    <h1>陀螺仪数据发送</h1>
+    <label for="ipInput">请输入接收数据的 IP 地址：</label>
+    <input type="text" id="ipInput" placeholder="例如：192.168.1.100">
+    <button onclick="startSending()">开始发送</button>
+    <h2>陀螺仪数据：</h2>
+    <p>Alpha: <span id="alpha">0</span></p>
+    <p>Beta: <span id="beta">0</span></p>
+    <p>Gamma: <span id="gamma">0</span></p>
 </body>
 </html>
