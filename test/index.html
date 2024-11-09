@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Run WebAssembly</title>
+</head>
+<body>
+    <h1>Running WebAssembly</h1>
+    <script>
+        async function runWasm() {
+            try {
+                // Fetch and compile the WebAssembly module
+                const response = await fetch('RCT.wasm'); // 替换为你的 .wasm 文件路径
+                const buffer = await response.arrayBuffer();
+                const module = await WebAssembly.compile(buffer);
+                const instance = await WebAssembly.instantiate(module);
+
+                // 调用 WebAssembly 导出的函数（假设导出函数叫 `add`）
+                console.log("Calling WebAssembly function:");
+                const result = instance.exports.add(2, 3); // 假设存在一个 add 函数
+                console.log("Result from WebAssembly:", result);
+            } catch (e) {
+                console.error("Error running WebAssembly:", e);
+            }
+        }
+
+        runWasm();
+    </script>
+</body>
+</html>
